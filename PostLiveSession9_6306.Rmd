@@ -1,0 +1,112 @@
+---
+title: "Live Session 09 Assignment"
+author: "Mike Martos"
+date: "July 13, 2016"
+output: 
+  html_document :
+    keep_md : yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries}
+library(fpp)
+library(tseries)
+```
+
+###Question 1
+
+```{r loadUKcars}
+data(ukcars)
+```
+
+####	Plot the time series. Can you identify seasonal fluctuations and/or a trend? 
+```{r plotUkcars}
+plot(ukcars)
+```
+
+####	Use a classical decomposition to calculate the trend-cycle and seasonal indices. 
+```{r decomposeUKcars}
+fitd <- decompose(ukcars)
+plot(fitd)
+
+```
+
+####	Do the results support the graphical interpretation from part (a)? 
+##### The seasonality is confirmed
+
+####	Compute and plot the seasonally adjusted data. 
+```{r adjSeasonUkcars}
+eeadj <- seasadj(fitd)
+plot(eeadj)
+```
+
+####	Change one observation to be an outlier (e.g., add 500 to one observation), and recompute the seasonally adjusted data. What is the effect of the outlier? 
+```{r add500UKcars}
+ukcars2 <- ts(c(ukcars[1:105],ukcars[106]-200+500,ukcars[107:113]),start=c(1977,1),frequency=4)
+ukcars2
+plot(ukcars2)
+fitd <- decompose(ukcars2)
+plot(fitd)
+eeadj <- seasadj(fitd)
+plot(eeadj)
+```
+
+####	Does it make any difference if the outlier is near the end rather than in the middle of the time series? 
+##### It depends, the model seems to "forget" about the outlier after some days, if it is very close to the the time window we are looking at then it has the more impact.
+
+####	Use STL to decompose the series. 
+```{r stlUKcars}
+fit <- stl(ukcars, s.window="periodic")
+plot(fit)
+```
+
+```{r plotukcars}
+plot(ukcars, col="gray",
+  main="Quarterly UK passenger car production",
+  ylab="car production", xlab="")
+lines(fit$time.series[,2],col="red",ylab="Trend")
+
+```
+
+###Question 2
+```{r loadquote}
+SNPdata <- get.hist.quote('GWPH',quote="Close")
+```
+####Log return
+```{r logreturn}
+SNPret <- log(lag(SNPdata)) - log(SNPdata)
+```
+####Volatility 
+```{r Volatility}
+SNPvol <- sd(SNPret) * sqrt(250) * 100  #250 trading days
+```
+
+```{r function}
+## volatility
+Vol <- function(d, logrets)
+{
+	var = 0
+	lam = 0
+	varlist <- c()
+	for (r in logrets) {
+		lam = lam*(1 - 1/d) + 1
+  	var = (1 - 1/lam)*var + (1/lam)*r^2
+		varlist <- c(varlist, var)
+	}
+	sqrt(varlist)
+}
+```
+
+```{r diffVolatility}
+volest <- Vol(10,SNPret)
+volest2 <- Vol(30,SNPret)
+volest3 <- Vol(100,SNPret)
+plot(volest,type="l",main="GWPH")
+lines(volest2,type="l",col="red")
+lines(volest3, type = "l", col="blue")
+```
+
+
