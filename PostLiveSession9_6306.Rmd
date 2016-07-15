@@ -23,7 +23,7 @@ data(ukcars)
 ```
 
 ####	Plot the time series. Can you identify seasonal fluctuations and/or a trend? 
-```{r plotukcars}
+```{r plotukcarsorig}
 plot(ukcars)
 ```
 
@@ -63,7 +63,7 @@ fit <- stl(ukcars, s.window="periodic")
 plot(fit)
 ```
 
-```{r plotukcars02}
+```{r plotukcars}
 plot(ukcars, col="gray",
   main="Quarterly UK passenger car production",
   ylab="car production", xlab="")

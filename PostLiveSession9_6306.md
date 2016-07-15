@@ -62,7 +62,7 @@ data(ukcars)
 plot(ukcars)
 ```
 
-![](PostLiveSession9_6306_files/figure-html/plotukcars-1.png)<!-- -->
+![](PostLiveSession9_6306_files/figure-html/plotukcarsorig-1.png)<!-- -->
 
 ####	Use a classical decomposition to calculate the trend-cycle and seasonal indices. 
 
@@ -165,7 +165,7 @@ plot(ukcars, col="gray",
 lines(fit$time.series[,2],col="red",ylab="Trend")
 ```
 
-![](PostLiveSession9_6306_files/figure-html/plotukcars02-1.png)<!-- -->
+![](PostLiveSession9_6306_files/figure-html/plotukcars-1.png)<!-- -->
 
 ###Question 2
 
