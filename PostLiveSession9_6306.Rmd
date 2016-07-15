@@ -12,8 +12,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r libraries}
-library(fpp)
 library(tseries)
+library(fpp)
 ```
 
 ###Question 1
@@ -23,7 +23,7 @@ data(ukcars)
 ```
 
 ####	Plot the time series. Can you identify seasonal fluctuations and/or a trend? 
-```{r plotUkcars}
+```{r plotukcars}
 plot(ukcars)
 ```
 
@@ -63,7 +63,7 @@ fit <- stl(ukcars, s.window="periodic")
 plot(fit)
 ```
 
-```{r plotukcars}
+```{r plotukcars02}
 plot(ukcars, col="gray",
   main="Quarterly UK passenger car production",
   ylab="car production", xlab="")
